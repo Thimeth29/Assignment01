@@ -31,8 +31,12 @@ jobs:
         docker push 576212614888.dkr.ecr.us-east-1.amazonaws.com/node-fargate-app:latest
 
     - name: Force new ECS deployment
+      env:
+        ECS_CLUSTER: fargate-cluster
+        ECS_SERVICE: node-service
       run: |
         aws ecs update-service \
-          --cluster ${{ secrets.ECS_CLUSTER }} \
-          --service ${{ secrets.ECS_SERVICE }} \
+          --cluster $ECS_CLUSTER \
+          --service $ECS_SERVICE \
           --force-new-deployment
+
