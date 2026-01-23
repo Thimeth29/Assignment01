@@ -1,0 +1,32 @@
+
+name: Deploy to ECS Fargate
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::123456789012:role/GitHubActionsRole
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t node-fargate-app ./app
+        docker tag node-fargate-app:latest ${{ secrets.ECR_URI }}:latest
+        docker push ${{ secrets.ECR_URI }}:latest
