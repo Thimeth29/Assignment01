@@ -3,8 +3,9 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello from Node server – thimeth');
+  res.send('Hello from Node server – I am Thimeth');
 });
+
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
