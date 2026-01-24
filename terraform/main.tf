@@ -52,6 +52,7 @@ resource "aws_ecs_task_definition" "node_task" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn = data.aws_iam_role.ecs_task_execution_role.arn
+
   task_role_arn = aws_iam_role.ecs_task_role.arn
 
 
@@ -62,7 +63,7 @@ resource "aws_ecs_task_definition" "node_task" {
       essential = true
       portMappings = [
         {
-          containerPort = 3000
+          containerPort = 8080
           protocol      = "tcp"
         }
       ]

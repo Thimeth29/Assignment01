@@ -3,7 +3,7 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 /* AWS S3 Configuration */
 AWS.config.update({
