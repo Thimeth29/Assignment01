@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "node_task" {
       essential = true
       portMappings = [
         {
-          containerPort = 8080
+          containerPort = 3000
           protocol      = "tcp"
         }
       ]
