@@ -93,15 +93,7 @@ resource "aws_iam_role_policy_attachment" "task_s3_attach" {
   policy_arn = aws_iam_policy.s3_upload_policy.arn
 }
 
-################################
-# EXECUTION ROLE POLICY ATTACH
-################################
-resource "aws_iam_role_policy_attachment" "ecs_exec_policy" {
-  role       = data.aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
 
-################################
 # SECURITY GROUP (PORT 8080)
 ################################
 resource "aws_security_group" "ecs_sg" {
@@ -169,7 +161,6 @@ resource "aws_ecs_service" "node_service" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.ecs_exec_policy,
     aws_iam_role_policy_attachment.task_s3_attach
   ]
 }
