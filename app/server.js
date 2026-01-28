@@ -71,24 +71,26 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   }
 
   const params = {
-    Bucket: 'thimeth-file-upload-bucket',   // 👈 YOUR BUCKET NAME
+    Bucket: 'thimeth-file-upload-bucket',
     Key: `${Date.now()}-${req.file.originalname}`,
-    Body: req.file.buffer
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype
   };
 
   try {
-    await s3.upload(params).promise();
+    const result = await s3.upload(params).promise();
     res.send(`
       <h2>✅ File Uploaded to S3</h2>
-      <p>File name: ${params.Key}</p>
-      <a href="/">Upload another file</a>
+      <p>File URL: ${result.Location}</p>
+      <a href="/">Go back</a>
     `);
-  } catch (error) {
-    console.error(error);
-    res.send('❌ Upload failed');
+  } catch (err) {
+    console.error('S3 ERROR:', err);
+    res.send(`
+      <h2>❌ Upload failed</h2>
+      <pre>${err.message}</pre>
+      <a href="/">Go back</a>
+    `);
   }
 });
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
