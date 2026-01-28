@@ -3,7 +3,15 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 
 const app = express();
-const port = 3000;
+const port = 8080;
+
+process.on('unhandledRejection', err => {
+  console.error('Unhandled rejection:', err);
+});
+
+process.on('uncaughtException', err => {
+  console.error('Uncaught exception:', err);
+});
 
 /* AWS S3 Configuration */
 AWS.config.update({
@@ -94,3 +102,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
+});
